@@ -1,3 +1,5 @@
+import { ConcatSource } from "webpack-sources";
+
 // action types
 const ADD_TODO = "todos/ADD_TODO";
 const TOGGLE_TODO = "todos/TOGGLE_TODO";
@@ -14,7 +16,7 @@ export const addTodo = text => {
   };
 };
 
-export const toogleTodo = id => {
+export const toggleTodo = id => {
   return {
     type: TOGGLE_TODO,
     payload: {
@@ -28,16 +30,13 @@ const initialState = [];
 export default function todos(state = initialState, action) {
   switch (action.type) {
     case ADD_TODO:
-      return {
-        ...state,
-        ...action.payload
-      };
+      return state.concat(action.payload);
     case TOGGLE_TODO:
       return state.map(todo =>
-        todo.payload.id === id
+        todo.id === action.payload.id
           ? {
               ...todo,
-              done: !todo.payload.done
+              done: !todo.done
             }
           : todo
       );
