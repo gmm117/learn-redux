@@ -1,8 +1,9 @@
 import "./App.css";
-import "./exercise";
+import CounterContainer from "./containers/CounterContainer";
+// import "./exercise";
 
 function App() {
-  return <div>1123</div>;
+  return <CounterContainer />;
 }
 
 export default App;
