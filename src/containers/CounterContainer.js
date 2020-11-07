@@ -1,44 +1,9 @@
 import React from "react";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { connect } from "react-redux";
 import Counter from "../components/Counter";
 import { increase, decrease, setDiff } from "../modules/counter";
 
-function CounterContainer() {
-  //   const { number, diff } = useSelector(state => ({
-  //     number: state.counter.number,
-  //     diff: state.counter.diff
-  //   }));
-
-  // individual value upgrade
-  //   const number = useSelector(state => state.counter.number);
-  //   const diff = useSelector(state => state.counter.diff);
-
-  // shallow equal
-  //   const { number, diff } = useSelector(
-  //     state => ({
-  //       number: state.counter.number,
-  //       diff: state.counter.diff
-  //     }),
-  //     (left, right) => {
-  //       return left.diff === right.diff && left.number === right.number;
-  //     }
-  //   );
-
-  //   // shallow equal
-  const { number, diff } = useSelector(
-    state => ({
-      number: state.counter.number,
-      diff: state.counter.diff
-    }),
-    shallowEqual
-  );
-
-  const dispatch = useDispatch();
-
-  const onIncrease = () => dispatch(increase());
-  const onDecrease = () => dispatch(decrease());
-  const onSetDiff = diff => dispatch(setDiff(diff));
-
+function CounterContainer({ number, diff, onIncrease, onDecrease, onSetDiff }) {
   return (
     <Counter
       number={number}
@@ -50,4 +15,22 @@ function CounterContainer() {
   );
 }
 
-export default CounterContainer;
+const mapStateToProps = state => ({
+  number: state.counter.number,
+  diff: state.counter.diff
+});
+
+const mapDispatchToProps = dispatch => ({
+  onIncrease: () => dispatch(increase()),
+  onDecrease: () => dispatch(decrease()),
+  onSetDiff: diff => dispatch(setDiff(diff))
+});
+
+// const connectHoc = (state, dispatch) => {
+//   return WrapMyComponent => <WrapMyComponent {...state} {...dispatch} />;
+// };
+
+// const enhance = connectHoc(mapStateToProps, mapDispatchToProps);
+// const container = enhance(CounterContainer);
+const enhance = connect(mapStateToProps, mapDispatchToProps);
+export default enhance(CounterContainer);
